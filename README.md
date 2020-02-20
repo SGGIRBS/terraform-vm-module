@@ -5,12 +5,10 @@ The patch window variable is used to tag the virtual machine, which Azure update
 
 Using this method more granular parameters can be fed into a single module to create multiple virtual machines that avoid the limitations of the count function.
 
-Example:
-
+# Example module call - Build EM domain controllers
 Calling the module can include global parameters that should apply to every VM under that module name.
 
-# Example module call - Build EM domain controllers
-
+```
 module "em_domain_controllers" {
   source  = "../../Modules/vms"
   service_short_name = "DS"
@@ -30,15 +28,14 @@ module "em_domain_controllers" {
   dns_servers = [
     "10.220.2.4",
     "10.220.2.5",
-  ]
+  ] <br/>
   common_tags = var.common_tags
 }
-
-
-You can then specify the per VM parameters (vm_user_properties variable specified above) in the tfvars file.
+```
 
 # Example tfvars file
-
+You can then specify the per VM parameters (vm_user_properties variable specified above) in the tfvars file.
+```
 em_domain_controllers = {
     "001" = {
         "Private_ip"  = "10.220.2.4"
@@ -51,3 +48,4 @@ em_domain_controllers = {
         "VM_size"     = "Standard_B2s"
     }
 }
+```
