@@ -17,9 +17,6 @@ module "em_domain_controllers" {
   vm_user_properties = var.em_domain_controllers
   availability_set_context = "EM"
   admin_password = data.azurerm_key_vault_secret.localadminpassword.value
-  //backup_policy_name = azurerm_recovery_services_protection_policy_vm.plan1week.name
-  //recovery_vault_resource_group_name = azurerm_resource_group.hubrecovery.name
-  //recovery_vault_name = azurerm_recovery_services_vault.hubvault.name
   data_disk_type = "Standard_LRS"
   data_disk_size_gb = "40"
   active_directory_domain = "emea.domain.org"
@@ -29,12 +26,12 @@ module "em_domain_controllers" {
     "10.220.2.4",
     "10.220.2.5",
   ] <br/>
-  common_tags = var.common_tags
+  common_tags = var.common_tags // Requires the Environment tag for the naming convention
 }
 ```
 
 # Example tfvars file
-You can then specify the per VM parameters (vm_user_properties variable specified above) in the tfvars file.
+You can then specify the per VM parameters (vm_user_properties variable specified above) in the tfvars file. 
 ```
 em_domain_controllers = {
     "001" = {
@@ -49,3 +46,5 @@ em_domain_controllers = {
     }
 }
 ```
+The naming convention is controlled within the module and is formatted as "${var.common_tags["Environment"]}-${var.service_short_name}${each.key}-VM" 
+Which in this case would output two VMs named Prod-DS001-VM and Prod-DS002-VM
